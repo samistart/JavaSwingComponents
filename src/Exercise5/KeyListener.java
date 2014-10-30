@@ -1,4 +1,4 @@
-package WhackAMole;
+package Exercise5;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -6,13 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
-public class Whacker extends JFrame {
+public class KeyListener extends JFrame {
+	// Components
 
 	private JPanel contentPane;
+	private JTextField textField = new JTextField();
+	JLabel lblWriteSomething = new JLabel("Write something");
 
 	/**
 	 * Launch the application.
@@ -21,7 +23,7 @@ public class Whacker extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Whacker frame = new Whacker();
+					KeyListener frame = new KeyListener();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,24 +35,18 @@ public class Whacker extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Whacker() {
+	public KeyListener() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.CENTER);
-		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Sami");
-			}
-		});
-		panel.add(btnSave);
+
+		contentPane.add(textField, BorderLayout.WEST);
+		textField.setColumns(10);
+
+		contentPane.add(lblWriteSomething, BorderLayout.CENTER);
 	}
 
 }
