@@ -23,6 +23,7 @@ import java.util.TimerTask;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+import javax.xml.bind.annotation.XmlElementDecl.GLOBAL;
 
 public class WhackAMole extends JFrame {
 
@@ -34,8 +35,8 @@ public class WhackAMole extends JFrame {
 	private int intervalMillisecs = 1000;
 	private String scoresFilePath = "/Users/SamiStart/Github/Tutorial 5/src/WhackAMole/scores.txt";
 	private JPanel gameJPanel = new JPanel();
-	Timer myTimer = new Timer();
-	TimerTask myTimerTask;
+	Timer myTimer;
+
 	// The top panel with the score and controls
 	JPanel panel = new JPanel();
 	private JPanel contentPane;
@@ -61,12 +62,13 @@ public class WhackAMole extends JFrame {
 						if (gameRunning) {
 							if (currentMole.getActive()) {
 								score += 1;
+								currentMole.setActive(false);
 							} else {
 								score -= 1;
 							}
 							lblScore.setText("Score: " + score);
 						}
-					
+
 					}
 				});
 			}
@@ -76,10 +78,8 @@ public class WhackAMole extends JFrame {
 
 		setButtons();
 
-		intervalMillisecs = 1000 / (comboBox.getSelectedIndex() + 1);
-
 	}
-	
+
 	private String getTime() {
 		Calendar cal = Calendar.getInstance();
 		cal.getTime();
@@ -132,6 +132,10 @@ public class WhackAMole extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+			
+				intervalMillisecs = 1000 - (comboBox.getSelectedIndex() * 150);
+				myTimer.cancel();
 				initialiseGameplay();
 				timedShuffle();
 			}
@@ -139,30 +143,30 @@ public class WhackAMole extends JFrame {
 		panel.add(comboBox);
 		btnEndGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try (PrintWriter out = new PrintWriter(new BufferedWriter(
 						new FileWriter(scoresFilePath, true)))) {
 					out.println("Date: " + getDate() + ", Time: " + getTime()
-							+ "\n" +"Score: "+ score + "\n");
+							+ "\n" + "Score: " + score + "\n");
 					out.flush();
 					out.close();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				
-				gameRunning=false;
-				score=0;
+
+				gameRunning = false;
+				score = 0;
 				lblScore.setText("Score: " + score);
 			}
 		});
 		btnStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gameRunning=true;
+				gameRunning = true;
 			}
 		});
-		
+
 		panel.add(btnStartGame);
-		
+
 		panel.add(btnEndGame);
 
 		initialiseGameplay();
@@ -193,7 +197,7 @@ public class WhackAMole extends JFrame {
 
 	private void timedShuffle() {
 
-		initialiseGameplay();
+		myTimer = new Timer();
 
 		myTimer.schedule(new TimerTask() {
 
