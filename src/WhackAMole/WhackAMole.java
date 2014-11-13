@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOError;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -27,11 +28,11 @@ import javax.xml.bind.annotation.XmlElementDecl.GLOBAL;
 
 public class WhackAMole extends JFrame {
 
-	private Boolean gameRunning = false;
+	public Boolean gameRunning = false;
 	private int gridSize = 4;
 	private Mole[][] moles = new Mole[gridSize][gridSize];
 	private int moleRow, moleCol;
-	private int score = 0;
+	public int score = 0;
 	private int intervalMillisecs = 1000;
 	private String scoresFilePath = "/Users/SamiStart/Github/Tutorial 5/src/WhackAMole/scores.txt";
 	private JPanel gameJPanel = new JPanel();
@@ -54,21 +55,25 @@ public class WhackAMole extends JFrame {
 		for (int row = 0; row < moles.length; row++) {
 			for (int col = 0; col < moles.length; col++) {
 				moles[row][col] = new Mole(false);
-				Mole currentMole = moles[row][col];
 				moles[row][col].addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						if (gameRunning) {
-							if (currentMole.getActive()) {
-								score += 1;
-								currentMole.setActive(false);
-							} else {
-								score -= 1;
-							}
-							lblScore.setText("Score: " + score);
-						}
+						if (e.getSource() instanceof Mole) {
+							if (gameRunning) {
 
+								Mole currentMole = (Mole) e.getSource();
+								if (currentMole.getActive()) {
+									score += 1;
+									currentMole.setActive(false);
+								} else {
+									score -= 1;
+								}
+								lblScore.setText("Score: " + score);
+							}
+						} else {
+							throw new IOError(null);
+						}
 					}
 				});
 			}
@@ -133,7 +138,6 @@ public class WhackAMole extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-			
 				intervalMillisecs = 1000 - (comboBox.getSelectedIndex() * 150);
 				myTimer.cancel();
 				initialiseGameplay();
