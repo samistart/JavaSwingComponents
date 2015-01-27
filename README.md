@@ -1,6 +1,6 @@
 Tutorial-5
 ==========
 
-Exercises from Tutorial 5 in java
+These are some exercises to showcase my ability in Java Swing. 
 
-Check out these exercises for handy Java Swing programs. There is also a whackamole called for whacking internet trolls called 'whackatroll'.
+There is also a whackamole called for whacking internet trolls called 'whackatroll'. This runs through a Java Swing interface.
